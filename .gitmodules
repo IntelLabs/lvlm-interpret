@@ -1,0 +1,3 @@
+[submodule "causality-lab"]
+	path = causality_lab
+	url = https://github.com/IntelLabs/causality-lab.git

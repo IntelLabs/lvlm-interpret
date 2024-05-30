@@ -1,0 +1,12 @@
+torch
+torchvision
+transformers==4.39.3
+gradio==4.26.0
+spaces
+pillow
+accelerate
+matplotlib
+seaborn
+scipy
+bitsandbytes
+
