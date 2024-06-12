@@ -289,7 +289,7 @@ def handle_text_relevancy(state, type_selector):
 
             max_input_token.append("max_img")
             ax.bar(max_input_token, max_rel_scores)
-            ax.set_xticklabels(max_input_token, fontsize=12)
+            # ax.set_xticklabels(max_input_token, fontsize=12)
 
             # save the plot per each output token
             # make part of the title bold

@@ -5,8 +5,11 @@ from io import BytesIO
 from PIL import Image
 import torch
 # from torchvision.transforms.functional import to_pil_image
-from transformers import LlavaForConditionalGeneration, LlavaProcessor
+from transformers import LlavaForConditionalGeneration, AutoProcessor
 from transformers import BitsAndBytesConfig
+
+func_to_enable_grad = '_sample'
+setattr(LlavaForConditionalGeneration, func_to_enable_grad, torch.enable_grad(getattr(LlavaForConditionalGeneration, func_to_enable_grad)))
 
 try:
     import intel_extension_for_pytorch as ipex
@@ -17,15 +20,7 @@ logger = logging.getLogger(__name__)
 
 def get_processor_model(args):
     #outputs: attn_output, attn_weights, past_key_value
-    if 'gemma' in args.model_name_or_path:
-        from processing_llavagemma import LlavaGemmaProcessor
-        from transformers import AutoTokenizer, CLIPImageProcessor
-        processor = LlavaGemmaProcessor(
-            tokenizer=AutoTokenizer.from_pretrained(args.model_name_or_path),
-            image_processor=CLIPImageProcessor.from_pretrained(args.model_name_or_path),
-        )
-    else:
-        processor = LlavaProcessor.from_pretrained(args.model_name_or_path)
+    processor = AutoProcessor.from_pretrained(args.model_name_or_path)
 
     if args.load_4bit:
         quant_config = BitsAndBytesConfig(

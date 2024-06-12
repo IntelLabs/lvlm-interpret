@@ -18,7 +18,7 @@ from utils_attn import (
     plot_text_to_image_analysis, handle_box_reset, boxes_click_handler, attn_update_slider
 )
 
-from utils_relevancy import generate_with_grads, construct_relevancy_map
+from utils_relevancy import construct_relevancy_map
 
 from utils_causal_discovery import (
     handle_causality, handle_causal_head, causality_update_dropdown
@@ -133,9 +133,7 @@ def lvlm_bot(state, temperature, top_p, max_new_tokens):
     else:
         eos_token_id = processor.tokenizer.eos_token_id
 
-    with torch.cpu.amp.autocast():
-        outputs = generate_with_grads(
-            model,
+    outputs = model.generate(
             **inputs, 
             do_sample=do_sample,
             temperature=temperature,
