@@ -1,7 +1,7 @@
 torch
 torchvision
 transformers>=4.41.1
-gradio==4.26.0
+gradio>=4.36.1
 spaces
 pillow
 accelerate
