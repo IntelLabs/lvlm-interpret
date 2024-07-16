@@ -122,7 +122,7 @@ def lvlm_bot(state, temperature, top_p, max_new_tokens):
     
     inputs = processor(prompt, image, return_tensors="pt").to(model.device)
     input_ids = inputs.input_ids
-    img_idx = torch.where(input_ids==model.config.image_token_index)[1].item()
+    img_idx = torch.where(input_ids==model.config.image_token_index)[1][0].item()
     do_sample = True if temperature > 0.001 else False
     # Generate
     model.enc_attn_weights = []
@@ -303,7 +303,7 @@ def build_demo(args, embed_mode=False):
                 attn_select_layer = gr.Slider(1, N_LAYERS, value=32, step=1, label="Layer")
             with gr.Row():
                 with gr.Column(scale=3):
-                    imagebox_recover = gr.Image(type="pil", label='Preprocessed image')
+                    imagebox_recover = gr.Image(type="pil", label='Preprocessed image', interactive=False)
 
                     generated_text = gr.HighlightedText(
                         label="Generated text (tokenized)",

@@ -477,7 +477,7 @@ def plot_text_to_image_analysis(state, layer_idx, boxes, head_idx=1 ):
 
     # attn_heatmap = plt.figure(figsize=(10, 3))
     # attn_image_patch =  mh_attentions[:, :, img_patch[0], img_patch[1]].cpu().mean(-1)
-    attn_image_patch = torch.stack([mh_attentions[:, :, x, y] for x, y in img_patches]).mean(0).cpu().mean(-1)
+    attn_image_patch = torch.stack([mh_attentions[:, :, x, y] for x, y in img_patches]).mean(0).float().cpu().mean(-1)
     logger.debug(torch.stack([mh_attentions[:, :, x, y] for x, y in img_patches]).shape)
     logger.debug(torch.stack([mh_attentions[:, :, x, y] for x, y in img_patches]).mean(0).shape)
     logger.debug(attn_image_patch.shape)
