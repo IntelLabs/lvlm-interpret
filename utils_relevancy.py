@@ -9,7 +9,6 @@ import torch.distributed as dist
 from torch import nn
 import torch.nn.functional as F
 
-from transformers.deepspeed import is_deepspeed_zero3_enabled
 from transformers.utils import  logging
 from transformers.generation.beam_constraints import DisjunctiveConstraint, PhrasalConstraint
 from transformers.generation.beam_search import  BeamSearchScorer, ConstrainedBeamSearchScorer
@@ -21,6 +20,7 @@ from transformers import (
     StoppingCriteriaList)
 from transformers.generation.utils import GenerateOutput
 
+import gradio as gr
 from tqdm import tqdm
 
 logger = logging.get_logger(__name__)
@@ -160,7 +160,7 @@ def compute_word_rel_map(tokens, target_index, R_i_i, separators_list,
     return word_rel_maps, current_rel_map, current_count, current_word
 
 
-def construct_relevancy_map(tokenizer, model, input_ids, tokens, outputs, output_ids, img_idx, apply_normalization=True):
+def construct_relevancy_map(tokenizer, model, input_ids, tokens, outputs, output_ids, img_idx, apply_normalization=True, progress=gr.Progress(track_tqdm=True)):
     logger.debug('Tokens: %s', tokens)
     enable_vit_relevancy = len(model.enc_attn_weights_vit) > 0
     if enable_vit_relevancy:
@@ -209,7 +209,7 @@ def construct_relevancy_map(tokenizer, model, input_ids, tokens, outputs, output
 
     rel_maps_dict = {}
     logger.debug(f'Number of output scores: {len(outputs.scores)}')
-    for target_index in range(len(outputs.scores)): #the last token is </s>
+    for target_index in tqdm(range(len(outputs.scores)), desc="Building relevancy maps"): #the last token is </s>
         clean_tokens.append(tokens[target_index])
         token_logits = outputs.scores[target_index]
         token_id = torch.tensor(output_ids[target_index]).to(device)

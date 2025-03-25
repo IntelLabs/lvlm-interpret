@@ -69,6 +69,8 @@ def clear_history(request: gr.Request):
     return (state, [], "", None, None, None, None)
 
 def add_text(state, text, image, image_process_mode):
+    global processor
+    
     if True: # state is None:
         state = gr.State()
         state.messages = []
@@ -248,7 +250,7 @@ def build_demo(args, embed_mode=False):
                         )
                         temperature = gr.Slider(minimum=0.0, maximum=1.0, value=0.2, step=0.1, interactive=True, label="Temperature",)
                         top_p = gr.Slider(minimum=0.0, maximum=1.0, value=0.7, step=0.1, interactive=True, label="Top P",)
-                        max_output_tokens = gr.Slider(minimum=0, maximum=512, value=64, step=64, interactive=True, label="Max new output tokens",)
+                        max_output_tokens = gr.Slider(minimum=0, maximum=512, value=32, step=32, interactive=True, label="Max new output tokens",)
 
 
                 with gr.Column(scale=6):

@@ -7,7 +7,12 @@ import torch
 
 import matplotlib.pyplot as plt
 
-# from causal_discovery_algs import LearnStructOrderedICD
+try:
+    from causal_discovery_algs import LearnStructOrderedICD
+except ImportError:
+    print("Warning: causal discovery pending update.")
+    LearnStructOrderedICD = None
+
 from graphical_models import PAG
 from causal_reasoning import CLEANN
 

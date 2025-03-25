@@ -23,12 +23,14 @@ if __name__ == "__main__":
                         help="Whether to load the model in 4bit")
     parser.add_argument("--load_8bit", action="store_true",
                         help="Whether to load the model in 8bit")
+    parser.add_argument("--device_map", default="auto",
+                        help="Device map to use for model", choices=["auto", "cpu", "cuda", "hpu"])
     args = parser.parse_args()
 
     assert not( args.load_4bit and args.load_8bit), "Cannot load both 4bit and 8bit models"
 
     demo = build_demo(args, embed_mode=False)
-    demo.queue(max_size=5)
+    # demo.queue(max_size=1)
     demo.launch(
         server_name=args.host,
         server_port=args.port,

@@ -9,4 +9,5 @@ matplotlib
 seaborn
 scipy
 bitsandbytes
-
+deepspeed
+opencv-python
