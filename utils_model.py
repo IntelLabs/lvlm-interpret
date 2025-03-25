@@ -38,8 +38,9 @@ def get_processor_model(args):
 
     model = LlavaForConditionalGeneration.from_pretrained(
         args.model_name_or_path, torch_dtype=torch.bfloat16, 
-        quantization_config=quant_config, low_cpu_mem_usage=True, device_map="auto"
+        quantization_config=quant_config, low_cpu_mem_usage=True, device_map=args.device_map
     )
+    model.vision_tower.config.output_attentions = True
 
     # Relevancy map
     # set hooks to get attention weights
